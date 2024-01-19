@@ -1,6 +1,10 @@
 class Ship {
-    constructor(length) {
-        this.length = length;
+    constructor(length = 0) {
+        if (length <= 0) {
+            throw new Error("incorrect length");
+        } else {
+            this.length = length;
+        }
         this.hitTimes = 0;
         this.sunk = false;
     }
