@@ -30,13 +30,13 @@ it("receive attack on unhit ship", () => {
 
 it("check if player has ships left with no ships", () => {
     const b = new Gameboard();
-    expect(b.doesPlayerHaveShipsLeft()).toBe(false);
+    expect(b.doesBoardHaveShipsLeft()).toBe(false);
 });
 
 it("check if player has ships left with 1 ship", () => {
     const b = new Gameboard();
     b.placeShip(4, 1, 1);
-    expect(b.doesPlayerHaveShipsLeft()).toBe(true);
+    expect(b.doesBoardHaveShipsLeft()).toBe(true);
 });
 it("check if player has ships after sinking ship", () => {
     const b = new Gameboard();
@@ -45,5 +45,5 @@ it("check if player has ships after sinking ship", () => {
     b.receiveAttack(1, 2);
     b.receiveAttack(1, 3);
     b.receiveAttack(1, 4);
-    expect(b.doesPlayerHaveShipsLeft()).toBe(false);
+    expect(b.doesBoardHaveShipsLeft()).toBe(false);
 });

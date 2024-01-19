@@ -30,22 +30,23 @@ class Gameboard {
 
     receiveAttack(x, y) {
         if (x < 0 || x >= this.boardSize || y < 0 || y >= this.boardSize) {
-            throw new Error("incorrect coords");
+            return "coords out of bound";
         }
         if (typeof this.board[x][y] === "object") {
-            if (this.board[x][y].hit == undefined) {
+            if (this.board[x][y].hit === undefined) {
                 throw new Error("cell constructed wrong");
             }
             if (this.board[x][y].hit === false) {
                 this.board[x][y].hit = true;
                 this.ships[this.board[x][y].id].hit();
-            } else {
-                throw new Error("can't hit same cell twice");
+                return "hit";
             }
-        } else if (typeof this.board[x][y] === "string") {
+            return "same twice";
+        }
+        if (typeof this.board[x][y] === "string") {
             if (this.board[x][y] === "M") {
                 // M - missed
-                throw new Error("can't hit same cell twice");
+                return "same twice";
             }
             if (this.board[x][y] === "U") {
                 // U - untouched
@@ -57,7 +58,7 @@ class Gameboard {
         }
     }
 
-    doesPlayerHaveShipsLeft() {
+    doesBoardHaveShipsLeft() {
         for (const key of Object.keys(this.ships)) {
             if (Object.prototype.hasOwnProperty.call(this.ships, key)) {
                 if (this.ships[key].isSunk() === false) {
