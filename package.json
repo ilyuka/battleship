@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll",
         "start": "webpack serve --open"
     },
     "keywords": [],
@@ -25,5 +25,9 @@
     },
     "dependencies": {
         "jquery": "^3.7.1"
-    }
+    },
+    "jest": {
+        "transform": {}
+    },
+    "type": "module"
 }
