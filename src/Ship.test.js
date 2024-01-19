@@ -8,7 +8,8 @@ it("ship constructor", () => {
 });
 it("ship empty constructor", () => {
     expect(() => {
-        new Ship();
+        /* eslint-disable-next-line no-unused-vars */
+        const ship = new Ship();
     }).toThrow();
 });
 it("ship hit", () => {

@@ -12,16 +12,19 @@ class Gameboard {
     }
 
     placeShip(shipLength, x, y) {
+        if (x < 0 || x >= this.boardSize || y < 0 || y >= this.boardSize) {
+            throw new Error("incorrect coords");
+        }
         const ship = new Ship(shipLength);
         this.shipCounter += 1;
         this.ships[this.shipCounter] = ship;
 
         if (this.boardSize - y >= shipLength) {
-            for (let i = y; i < this.boardSize; i += 1) {
-                this.board[x][y] = { id: this.shipCounter, hit: false };
+            for (let i = y; i < y + shipLength; i += 1) {
+                this.board[x][i] = { id: this.shipCounter, hit: false };
             }
         } else {
-            throw new Error("incorrect y coord");
+            throw new Error("ship too long, can't fit");
         }
     }
 
@@ -29,25 +32,24 @@ class Gameboard {
         if (x < 0 || x >= this.boardSize || y < 0 || y >= this.boardSize) {
             throw new Error("incorrect coords");
         }
-        let cell = this.board[x][y];
-        if (typeof cell === "object") {
-            if (this.cell.hit == undefined) {
+        if (typeof this.board[x][y] === "object") {
+            if (this.board[x][y].hit == undefined) {
                 throw new Error("cell constructed wrong");
             }
-            if (this.cell.hit === false) {
-                this.cell.hit = true;
-                this.ships[this.cell.id].hit();
+            if (this.board[x][y].hit === false) {
+                this.board[x][y].hit = true;
+                this.ships[this.board[x][y].id].hit();
             } else {
-                return "hit already";
+                throw new Error("can't hit same cell twice");
             }
-        } else if (typeof cell === "string") {
-            if (cell === "M") {
+        } else if (typeof this.board[x][y] === "string") {
+            if (this.board[x][y] === "M") {
                 // M - missed
-                return "missed already";
+                throw new Error("can't hit same cell twice");
             }
-            if (cell === "U") {
+            if (this.board[x][y] === "U") {
                 // U - untouched
-                cell = "M";
+                this.board[x][y] = "M";
                 return "missed";
             }
         } else {
@@ -56,9 +58,11 @@ class Gameboard {
     }
 
     doesPlayerHaveShipsLeft() {
-        for (let i = 1; i < this.ships.length; i += 1) {
-            if (this.ships[i].isSunk()) {
-                return true;
+        for (const key of Object.keys(this.ships)) {
+            if (Object.prototype.hasOwnProperty.call(this.ships, key)) {
+                if (this.ships[key].isSunk() === false) {
+                    return true;
+                }
             }
         }
         return false;
