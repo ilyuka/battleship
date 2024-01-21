@@ -24,11 +24,18 @@ function drawBoard(array, divId) {
     }
 }
 
-function showWinMessage() {
-    $("#input__message").text("you've won");
+function showMessage(text) {
+    $("#input__message").text(`${text}`);
 }
-function showHitSameTwiceMessage() {
-    $("#input__message").text("you've already hit there");
+function showRestartButton(restartFunction) {
+    $("#restart").show();
+    $("#restart").on("click", () => {
+        hideRestartButton();
+        restartFunction();
+    });
+}
+function hideRestartButton() {
+    $("#restart").hide();
 }
 
 function readClick(eTarget) {
@@ -41,4 +48,10 @@ function readClick(eTarget) {
     }
 }
 
-export { drawBoard, readClick, showHitSameTwiceMessage, showWinMessage };
+export {
+    drawBoard,
+    readClick,
+    showMessage,
+    showRestartButton,
+    hideRestartButton,
+};

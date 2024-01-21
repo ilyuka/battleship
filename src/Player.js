@@ -6,19 +6,24 @@ class Player {
     }
 
     takeTurn(enemyBoard, x, y) {
-        let res;
-        if (x == undefined || y == undefined) {
-            let randomX;
-            let randomY;
-            while (res !== "missed" && res !== "hit") {
-                randomX = Math.floor(Math.random() * 10);
-                randomY = Math.floor(Math.random() * 10);
-                res = enemyBoard.receiveAttack(randomX, randomY);
-            }
+        let res = enemyBoard.receiveAttack(x, y);
+        if (enemyBoard.doesBoardHaveShipsLeft() === false) {
+            this.wins += 1;
+            return "won";
         } else {
-            res = enemyBoard.receiveAttack(x, y);
+            return res;
         }
+    }
 
+    takeRandomTurn(enemyBoard) {
+        let res;
+        let randomX;
+        let randomY;
+        while (res !== "missed" && res !== "hit") {
+            randomX = Math.floor(Math.random() * 10);
+            randomY = Math.floor(Math.random() * 10);
+            res = enemyBoard.receiveAttack(randomX, randomY);
+        }
         if (enemyBoard.doesBoardHaveShipsLeft() === false) {
             this.wins += 1;
             return "won";

@@ -16,63 +16,69 @@ function createGame() {
     player2 = new Player(gb2, "computer");
 
     fillShips();
-    updateShips();
+    updateBoards();
+    ui.hideRestartButton();
+    ui.showMessage("");
+    addBoardClick();
 }
 
 function fillShips() {
-    gb1.placeShip(3, 0, 0);
+    gb1.placeShip(1, 5, 5);
     gb1.placeShip(3, 9, 0);
     gb1.placeShip(3, 5, 5);
 
     gb2.placeShip(3, 1, 1);
-    gb2.placeShip(3, 8, 6);
-    gb2.placeShip(3, 5, 2);
+    // gb2.placeShip(3, 8, 6);
+    // gb2.placeShip(3, 5, 2);
 }
 
-function updateShips() {
+function updateBoards() {
     ui.drawBoard(gb1.board, "#gb1");
     ui.drawBoard(gb2.board, "#gb2");
 }
 
 function makeTurn(eTarget) {
-    console.log("currPlayer", currPlayer);
     const [x, y] = ui.readClick(eTarget);
     if (currPlayer === "p1") {
-        if (x != undefined && y != undefined) {
-            let res = player1.takeTurn(gb2, x, y);
-            if (res === "won") {
-                ui.showWinMessage();
-                removeClick();
-                return;
-            }
-            if (res !== "missed" && res !== "hit") {
-                ui.showHitSameTwiceMessage();
-                return;
-            }
-            currPlayer = "p2";
-            updateShips();
-            setTimeout(() => {
-                let res = player2.takeTurn(gb1);
-                currPlayer = "p1";
-                updateShips();
-                if (res === "won") {
-                    ui.showWinMessage();
-                    return;
-                }
-            }, 550);
+        let res = player1.takeTurn(gb2, x, y);
+        if (!Gameboard.validAnswers.includes(res)) {
+            return;
         }
+        updateBoards();
+        if (res === "won") {
+            ui.showMessage(`${player1.name} has won`);
+            ui.showRestartButton(createGame);
+            removeBoardClick();
+            return;
+        }
+        if (res === "same twice") {
+            ui.showMessage("can't hit the same cell twice");
+            return;
+        }
+        currPlayer = "p2";
+        setTimeout(() => {
+            let res = player2.takeRandomTurn(gb1);
+            updateBoards();
+            currPlayer = "p1";
+            if (res === "won") {
+                ui.showMessage(`${player2.name} has won`);
+                ui.showRestartButton(createGame);
+                removeBoardClick();
+                return;
+            }
+        }, 250);
     }
 }
 
-function handleClick(e) {
+function handleBoardClick(e) {
     makeTurn(e.target);
 }
-function removeClick() {
-    $("#gb2").off("click", handleClick);
+function removeBoardClick() {
+    $("#gb2").off("click", handleBoardClick);
 }
-function addClick() {
-    $("#gb2").on("click", handleClick);
+function addBoardClick() {
+    $("#gb2").on("click", handleBoardClick);
 }
 
 createGame();
-addClick();
+addBoardClick();

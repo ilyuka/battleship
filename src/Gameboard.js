@@ -1,6 +1,7 @@
 import Ship from "./Ship.js";
 
 class Gameboard {
+    static validAnswers = ["hit", "missed", "same twice", "won"];
     constructor() {
         this.boardSize = 10;
         this.board = new Array(this.boardSize);
@@ -28,14 +29,28 @@ class Gameboard {
         }
     }
 
-    receiveAttack(x, y) {
+    validateAttack(x, y) {
+        if ((x !== 0 && !x) || (y !== 0 && !y)) {
+            return "incorrect coords type";
+        }
         if (x < 0 || x >= this.boardSize || y < 0 || y >= this.boardSize) {
             return "coords out of bound";
         }
         if (typeof this.board[x][y] === "object") {
             if (this.board[x][y].hit === undefined) {
-                throw new Error("cell constructed wrong");
+                return "cell constructed wrong";
             }
+        } else if (this.board[x][y] !== "M" && this.board[x][y] !== "U") {
+            return "wrong cell data";
+        }
+        return "ok";
+    }
+
+    receiveAttack(x, y) {
+        const valid = this.validateAttack(x, y);
+        if (valid !== "ok") return valid;
+
+        if (typeof this.board[x][y] === "object") {
             if (this.board[x][y].hit === false) {
                 this.board[x][y].hit = true;
                 this.ships[this.board[x][y].id].hit();
@@ -54,7 +69,7 @@ class Gameboard {
                 return "missed";
             }
         } else {
-            throw new Error("cell is broken");
+            return "cell is broken";
         }
     }
 
