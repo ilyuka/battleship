@@ -3,16 +3,17 @@ import Player from "./Player.js";
 import * as ui from "./ui.js";
 
 class Game {
-    constructor(name1 = "Segismundo", name2 = "Computer") {
+    constructor(shipsCoords, name1 = "Segismundo", name2 = "Computer") {
         this.restartGame = this.restartGame.bind(this);
+        this.shipsToFill = shipsCoords;
         this.restartGame(name1, name2);
     }
 
     restartGame(name1, name2) {
         this.gb1 = new Gameboard();
-        this.player1 = new Player(gb1, name1);
+        this.player1 = new Player(this.gb1, name1);
         this.gb2 = new Gameboard();
-        this.player2 = new Player(gb2, name2);
+        this.player2 = new Player(this.gb2, name2);
         this.currPlayer = "p1";
 
         this.fillShips();
@@ -26,9 +27,12 @@ class Game {
         this.makeTurn(e.target);
     }
     fillShips() {
-        this.gb1.placeShip(1, 5, 5);
-        this.gb1.placeShip(3, 9, 0);
-        this.gb1.placeShip(3, 5, 5);
+        for (const key in this.shipsToFill) {
+            const x = key[0];
+            const y = key[1];
+            const length = this.shipsToFill[key];
+            this.gb1.placeShip(Number(length), Number(x), Number(y));
+        }
 
         this.gb2.placeShip(3, 1, 1);
         // this.gb2.placeShip(3, 8, 6);

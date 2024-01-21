@@ -7,13 +7,27 @@ export default class PlaceMenu {
 
         this.isMoving = false;
         this.move = this.move.bind(this);
+        this.returnShipData = this.returnShipData.bind(this);
+    }
+
+    returnShipData() {
+        const shipsCoords = {};
+        for (let i = 0; i < this.gb.board.length; i += 1) {
+            for (let j = 0; j < this.gb.board[i].length; j += 1) {
+                if (typeof this.gb.board[i][j] === "object") {
+                    let ship = this.gb.board[i][j];
+                    shipsCoords[`${ship.x}${ship.y}`] = ship.length;
+                }
+            }
+        }
+        console.log(shipsCoords);
+        return shipsCoords;
     }
 
     startPlaceMenu() {
         this.gb = new Gameboard();
         this.fillShips();
         this.updateBoard();
-
         this.addDraggabilityForShips();
     }
 
@@ -28,33 +42,60 @@ export default class PlaceMenu {
             const x = Math.floor(initId / 10);
             const y = initId % 10;
             const shipRef = this.gb.board[x][y];
+            const shipIds = [];
+            for (let i = shipRef.y; i < shipRef.y + shipRef.length; i += 1) {
+                shipIds.push(this.gb.board[x][i]);
+            }
             // console.log(initId, x, y, length);
             // const direction = ...
             if (!this.isMoving) {
                 this.isMoving = true;
-                this.addMouseEnter(initId, shipRef.x, shipRef.y, shipRef);
+                this.addMouseEnter(
+                    initId,
+                    shipRef.x,
+                    shipRef.y,
+                    shipRef,
+                    shipIds
+                );
             }
         });
     }
 
-    addMouseEnter(initId, x, y, shipRef) {
+    addMouseEnter(initId, x, y, shipRef, shipIds) {
         $("#gbplace")
             .children()
             .map((index, child) => {
                 $(child).on("click", (ev) => {
-                    // upd prev loc
-                    for (let i = y; i < y + shipRef.length; i += 1) {
-                        this.gb.board[x][i] = "U";
-                    }
-                    //upd new loc
+                    // checkValidity
                     const newId = ev.target.id;
                     const newX = Math.floor(newId / 10);
                     const newY = newId % 10;
+                    let canUpdate = true;
                     for (let i = newY; i < newY + shipRef.length; i += 1) {
-                        this.gb.board[newX][i] = shipRef;
+                        // check out of bound
+                        if (i >= this.gb.boardSize) {
+                            console.log("out of bounds");
+                            canUpdate = false;
+                        }
+                        // check if overlapping
+                        if (typeof this.gb.board[newX][i] === "object") {
+                            console.log(`${newX} ${i} is taken!`);
+                            canUpdate = false;
+                        }
+                        // check if adjacent
                     }
-                    shipRef.x = newX;
-                    shipRef.y = newY;
+                    if (canUpdate) {
+                        // upd prev loc
+                        for (let i = y; i < y + shipRef.length; i += 1) {
+                            this.gb.board[x][i] = "U";
+                        }
+                        //upd new loc
+                        for (let i = newY; i < newY + shipRef.length; i += 1) {
+                            this.gb.board[newX][i] = shipIds[i - newY];
+                        }
+                        shipRef.x = newX;
+                        shipRef.y = newY;
+                    }
 
                     this.updateBoard();
 
@@ -91,8 +132,8 @@ export default class PlaceMenu {
     }
 
     fillShips() {
-        this.gb.placeShip(3, 0, 2);
+        this.gb.placeShip(1, 0, 2);
         this.gb.placeShip(3, 9, 0);
-        // this.gb.placeShip(3, 5, 5);
+        this.gb.placeShip(3, 5, 5);
     }
 }

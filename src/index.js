@@ -2,6 +2,12 @@ import Game from "./Game.js";
 import PlaceMenu from "./PlaceMenu.js";
 import "./style.css";
 
-const pm = new PlaceMenu();
+const stopPlacingButton = $("<button>").text("start game");
+stopPlacingButton.on("click", (e) => {
+    $(e.target).hide();
+    const shipsData = pm.returnShipData();
+    const game = new Game(shipsData);
+});
+$("#content").append(stopPlacingButton);
 
-// const game = new Game();
+const pm = new PlaceMenu();
