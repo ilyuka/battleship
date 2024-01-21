@@ -1,14 +1,6 @@
 import Player from "./Player.js";
 import Gameboard from "./Gameboard.js";
-
-import {
-    drawBoard,
-    readInput,
-    clearInput,
-    disableInputs,
-    enableInputs,
-    showHitSameTwiceMessage,
-} from "./ui.js";
+import * as ui from "./ui.js";
 import "./style.css";
 
 let player1;
@@ -24,6 +16,7 @@ function createGame() {
     player2 = new Player(gb2, "computer");
 
     fillShips();
+    updateShips();
 }
 
 function fillShips() {
@@ -34,44 +27,52 @@ function fillShips() {
     gb2.placeShip(3, 1, 1);
     gb2.placeShip(3, 8, 6);
     gb2.placeShip(3, 5, 2);
-
-    updateShips();
 }
 
 function updateShips() {
-    drawBoard(gb1.board, "#gb1");
-    drawBoard(gb2.board, "#gb2");
+    ui.drawBoard(gb1.board, "#gb1");
+    ui.drawBoard(gb2.board, "#gb2");
 }
 
-function makeTurn() {
+function makeTurn(eTarget) {
     console.log("currPlayer", currPlayer);
-
+    const [x, y] = ui.readClick(eTarget);
     if (currPlayer === "p1") {
-        const [x, y] = readInput();
-        console.log(x, y);
         if (x != undefined && y != undefined) {
             let res = player1.takeTurn(gb2, x, y);
+            if (res === "won") {
+                ui.showWinMessage();
+                removeClick();
+                return;
+            }
             if (res !== "missed" && res !== "hit") {
-                showHitSameTwiceMessage();
+                ui.showHitSameTwiceMessage();
                 return;
             }
             currPlayer = "p2";
             updateShips();
-            clearInput();
-            disableInputs();
             setTimeout(() => {
-                player2.takeTurn(gb1);
+                let res = player2.takeTurn(gb1);
                 currPlayer = "p1";
                 updateShips();
-                clearInput();
-                enableInputs();
+                if (res === "won") {
+                    ui.showWinMessage();
+                    return;
+                }
             }, 550);
         }
     }
 }
 
-$("#input__submit").on("click", () => {
-    makeTurn();
-});
+function handleClick(e) {
+    makeTurn(e.target);
+}
+function removeClick() {
+    $("#gb2").off("click", handleClick);
+}
+function addClick() {
+    $("#gb2").on("click", handleClick);
+}
 
 createGame();
+addClick();
