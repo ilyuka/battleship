@@ -1,6 +1,6 @@
 class Player {
-    constructor(gameboard) {
-        this.name = "Segismundo";
+    constructor(gameboard, name = "Segismundo") {
+        this.name = name;
         this.wins = 0;
         this.board = gameboard;
     }
@@ -8,11 +8,15 @@ class Player {
     takeTurn(enemyBoard, x, y) {
         if (!x && !y) {
             // for 'computer player'
-            const randomX = Math.floor(Math.random() * 10);
-            const randomY = Math.floor(Math.random() * 10);
+            let randomX;
+            let randomY;
             let res;
+
             do {
+                randomX = Math.floor(Math.random() * 10);
+                randomY = Math.floor(Math.random() * 10);
                 res = enemyBoard.receiveAttack(randomX, randomY);
+                break;
             } while (
                 enemyBoard.doesBoardHaveShipsLeft() &&
                 (res !== "hit" || res !== "missed")
