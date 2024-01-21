@@ -1,13 +1,21 @@
 import Player from "./Player.js";
 import Gameboard from "./Gameboard.js";
 
-import { drawBoard } from "./ui.js";
+import {
+    drawBoard,
+    readInput,
+    clearInput,
+    disableInputs,
+    enableInputs,
+    showHitSameTwiceMessage,
+} from "./ui.js";
 import "./style.css";
 
 let player1;
 let player2;
 let gb1;
 let gb2;
+let currPlayer = "p1";
 
 function createGame() {
     gb1 = new Gameboard();
@@ -35,22 +43,35 @@ function updateShips() {
     drawBoard(gb2.board, "#gb2");
 }
 
-function turn1() {
-    let coords = prompt("coords: <x y>").split(" ");
-    const x = Number(coords[0]);
-    const y = Number(coords[1]);
-    console.log(player1.takeTurn(gb2, x, y));
-    console.log(gb2);
-    updateShips();
-    // turn2();
+function makeTurn() {
+    console.log("currPlayer", currPlayer);
+
+    if (currPlayer === "p1") {
+        const [x, y] = readInput();
+        console.log(x, y);
+        if (x != undefined && y != undefined) {
+            let res = player1.takeTurn(gb2, x, y);
+            if (res !== "missed" && res !== "hit") {
+                showHitSameTwiceMessage();
+                return;
+            }
+            currPlayer = "p2";
+            updateShips();
+            clearInput();
+            disableInputs();
+            setTimeout(() => {
+                player2.takeTurn(gb1);
+                currPlayer = "p1";
+                updateShips();
+                clearInput();
+                enableInputs();
+            }, 250);
+        }
+    }
 }
 
-function turn2() {
-    console.log(player2.takeTurn(gb1));
-    console.log(gb1);
-    updateShips();
-    turn1();
-}
+$("#input__submit").on("click", () => {
+    makeTurn();
+});
 
 createGame();
-turn1();

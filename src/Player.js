@@ -7,20 +7,17 @@ class Player {
 
     takeTurn(enemyBoard, x, y) {
         let res;
-        if (!x || !y) {
+        if (x == undefined || y == undefined) {
             let randomX;
             let randomY;
             while (res !== "missed" && res !== "hit") {
                 randomX = Math.floor(Math.random() * 10);
                 randomY = Math.floor(Math.random() * 10);
-                // console.log("randomX", randomX, " randomY", randomY);
                 res = enemyBoard.receiveAttack(randomX, randomY);
-                // console.log("newRes", res);
             }
         } else {
             res = enemyBoard.receiveAttack(x, y);
         }
-        // console.log("final res", res);
 
         if (enemyBoard.doesBoardHaveShipsLeft() === false) {
             this.wins += 1;
