@@ -48,10 +48,18 @@ function readClick(eTarget) {
     }
 }
 
+function removeBoardClick(fn) {
+    $("#gb2").off("click", fn);
+}
+function addBoardClick(fn) {
+    $("#gb2").on("click", fn);
+}
 export {
     drawBoard,
     readClick,
     showMessage,
     showRestartButton,
     hideRestartButton,
+    removeBoardClick,
+    addBoardClick,
 };
