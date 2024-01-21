@@ -14,38 +14,73 @@ export default class PlaceMenu {
         this.fillShips();
         this.updateBoard();
 
-        this.addDraggability();
+        this.addDraggabilityForShips();
     }
 
-    addDraggability() {
+    addDraggabilityForShips() {
         const ships = $("#gbplace")
             .children()
             .filter(function () {
                 return $(this).hasClass("nothit");
             });
         ships.on("click", (e) => {
-            let coords = e.target.id;
-            let x = Math.floor(coords / 10);
-            let y = coords % 10;
-            console.log(this.gb.board[x][y]);
+            const initId = e.target.id;
+            const x = Math.floor(initId / 10);
+            const y = initId % 10;
+            const shipRef = this.gb.board[x][y];
+            // const length = this.gb.board[x][y].length;
+            // console.log(initId, x, y, length);
+            // const direction = ...
             if (!this.isMoving) {
                 this.isMoving = true;
+                this.addMouseEnter(initId, x, y, shipRef);
             }
-            $("#gbplace").on("mouseover", (e) => {
-                if (this.isMoving) {
-                    this.move(e);
-                }
-            });
         });
+    }
+
+    addMouseEnter(initId, x, y, shipRef) {
+        $("#gbplace")
+            .children()
+            .map((index, child) => {
+                // $(child).on("mouseenter", (ev) => {
+                //     console.log(ev.target);
+                // });
+                $(child).on("click", (ev) => {
+                    // $(`#${initId}`).removeClass("nothit");
+                    this.gb.board[x][y] = "U";
+                    const newId = ev.target.id;
+                    const newX = Math.floor(newId / 10);
+                    const newY = newId % 10;
+                    this.gb.board[newX][newY] = shipRef;
+                    this.updateBoard();
+
+                    // $(ev.target).addClass("nothit");
+                    // console.log("end", ev.target);
+                    this.removeMouseEnter();
+                    this.isMoving = false;
+                    console.log(this.gb.board);
+                });
+            });
+    }
+    removeMouseEnter() {
+        $("#gbplace")
+            .children()
+            .map((index, child) => {
+                $(child).off("mouseenter");
+                $(child).off("click");
+            });
+        this.addDraggabilityForShips();
     }
 
     move(e) {
         console.log("target", e.target);
         const elt = e.currentTarget;
-        $(elt).on("click", () => {
+        $(elt).on("click", (e2) => {
             this.isMoving = false;
             $(elt).off("mouseover");
             $(elt).off("click");
+            $(e2.target).addClass("nothit");
+            console.log(e2.target);
         });
     }
 
