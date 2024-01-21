@@ -6,27 +6,27 @@ class Player {
     }
 
     takeTurn(enemyBoard, x, y) {
-        if (!x && !y) {
-            // for 'computer player'
+        let res;
+        if (!x || !y) {
             let randomX;
             let randomY;
-            let res;
-
-            do {
+            while (res !== "missed" && res !== "hit") {
                 randomX = Math.floor(Math.random() * 10);
                 randomY = Math.floor(Math.random() * 10);
+                // console.log("randomX", randomX, " randomY", randomY);
                 res = enemyBoard.receiveAttack(randomX, randomY);
-                break;
-            } while (
-                enemyBoard.doesBoardHaveShipsLeft() &&
-                (res !== "hit" || res !== "missed")
-            );
+                // console.log("newRes", res);
+            }
         } else {
-            enemyBoard.receiveAttack(x, y);
+            res = enemyBoard.receiveAttack(x, y);
         }
+        // console.log("final res", res);
+
         if (enemyBoard.doesBoardHaveShipsLeft() === false) {
             this.wins += 1;
             return "won";
+        } else {
+            return res;
         }
     }
 }

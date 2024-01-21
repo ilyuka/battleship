@@ -1,4 +1,4 @@
-import Ship from "./Ship";
+import Ship from "./Ship.js";
 
 it("ship constructor", () => {
     const ship = new Ship(3);
