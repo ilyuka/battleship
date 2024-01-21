@@ -17,7 +17,7 @@ class Game {
         this.currPlayer = "p1";
 
         this.fillShips();
-        this.updateBoards();
+        this.drawBoards();
         ui.hideRestartButton();
         ui.showMessage("");
         ui.addBoardClick(this.handleBoardClick.bind(this));
@@ -38,7 +38,7 @@ class Game {
         this.gb2.placeShip(3, 8, 6);
         this.gb2.placeShip(3, 5, 2);
     }
-    updateBoards() {
+    drawBoards() {
         ui.drawBoard(this.gb1.board, "#gb1");
         ui.drawBoard(this.gb2.board, "#gb2");
     }
@@ -49,7 +49,7 @@ class Game {
             if (!Gameboard.validAnswers.includes(res)) {
                 return;
             }
-            this.updateBoards();
+            ui.redrawCell("#gb2", eTarget.id, res);
             if (res === "won") {
                 ui.showMessage(`${this.player1.name} has won`);
                 ui.showRestartButton(this.restartGame);
@@ -62,8 +62,8 @@ class Game {
             }
             this.currPlayer = "p2";
             setTimeout(() => {
-                let res = this.player2.takeRandomTurn(this.gb1);
-                this.updateBoards();
+                let [res, x, y] = this.player2.takeRandomTurn(this.gb1);
+                ui.redrawCell("#gb1", `${x}${y}`, res);
                 this.currPlayer = "p1";
                 if (res === "won") {
                     ui.showMessage(`${this.player2.name} has won`);

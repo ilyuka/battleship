@@ -26,9 +26,6 @@
         "webpack-cli": "^5.1.4",
         "webpack-dev-server": "^4.15.1"
     },
-    "dependencies": {
-        "jquery": "^3.7.1"
-    },
     "jest": {
         "transform": {}
     },

@@ -24,6 +24,20 @@ function drawBoard(array, divId) {
     }
 }
 
+function redrawCell(boardId, cellId, cellStatus) {
+    const cell = $(boardId).find(`#${cellId}`);
+    if (cellStatus === "won" || cellStatus === "hit") {
+        cell.removeClass("nothit");
+        cell.addClass("hit");
+        return;
+    }
+    if (cellStatus === "missed") {
+        cell.removeClass("U");
+        cell.addClass("M");
+        return;
+    }
+}
+
 function showMessage(text) {
     $("#input__message").text(`${text}`);
 }
@@ -54,6 +68,7 @@ function removeBoardClick(fn) {
 function addBoardClick(fn) {
     $("#gb2").on("click", fn);
 }
+
 export {
     drawBoard,
     readClick,
@@ -62,4 +77,5 @@ export {
     hideRestartButton,
     removeBoardClick,
     addBoardClick,
+    redrawCell,
 };

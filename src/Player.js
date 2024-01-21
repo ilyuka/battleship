@@ -28,7 +28,7 @@ class Player {
             this.wins += 1;
             return "won";
         } else {
-            return res;
+            return [res, randomX, randomY];
         }
     }
 }
