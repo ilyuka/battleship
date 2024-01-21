@@ -6,7 +6,7 @@ class Game {
     constructor(shipsCoords, name1 = "Segismundo", name2 = "Computer") {
         this.restartGame = this.restartGame.bind(this);
         this.shipsToFill = shipsCoords;
-        this.restartGame(name1, name2);
+        this.restartGame(name1 || "Segismundo", name2 || "Computer");
     }
 
     restartGame(name1, name2) {
@@ -35,8 +35,8 @@ class Game {
         }
 
         this.gb2.placeShip(3, 1, 1);
-        // this.gb2.placeShip(3, 8, 6);
-        // this.gb2.placeShip(3, 5, 2);
+        this.gb2.placeShip(3, 8, 6);
+        this.gb2.placeShip(3, 5, 2);
     }
     updateBoards() {
         ui.drawBoard(this.gb1.board, "#gb1");
@@ -67,7 +67,9 @@ class Game {
                 this.currPlayer = "p1";
                 if (res === "won") {
                     ui.showMessage(`${this.player2.name} has won`);
-                    ui.showRestartButton(this.restartGame);
+                    ui.showRestartButton(() =>
+                        this.restartGame(this.player1.name, this.player2.name)
+                    );
                     ui.removeBoardClick();
                     return;
                 }
