@@ -1,13 +1,14 @@
 class Player {
-    constructor(gameboard, name = "Segismundo") {
+    constructor(gameboard, enemyBoard, name = "Segismundo") {
         this.name = name;
         this.wins = 0;
         this.board = gameboard;
+        this.enemyBoard = enemyBoard;
     }
 
-    takeTurn(enemyBoard, x, y) {
-        let res = enemyBoard.receiveAttack(x, y);
-        if (enemyBoard.doesBoardHaveShipsLeft() === false) {
+    takeTurn(row, col) {
+        let res = this.enemyBoard.receiveAttack(row, col);
+        if (this.enemyBoard.doesBoardHaveShipsLeft() === false) {
             this.wins += 1;
             return "won";
         } else {
@@ -15,20 +16,20 @@ class Player {
         }
     }
 
-    takeRandomTurn(enemyBoard) {
+    takeRandomTurn() {
         let res;
-        let randomX;
-        let randomY;
+        let randomRow;
+        let randomCol;
         while (res !== "missed" && res !== "hit") {
-            randomX = Math.floor(Math.random() * 10);
-            randomY = Math.floor(Math.random() * 10);
-            res = enemyBoard.receiveAttack(randomX, randomY);
+            randomRow = Math.floor(Math.random() * 10);
+            randomCol = Math.floor(Math.random() * 10);
+            res = this.enemyBoard.receiveAttack(randomRow, randomCol);
         }
-        if (enemyBoard.doesBoardHaveShipsLeft() === false) {
+        if (this.enemyBoard.doesBoardHaveShipsLeft() === false) {
             this.wins += 1;
             return "won";
         } else {
-            return [res, randomX, randomY];
+            return [res, randomRow, randomCol];
         }
     }
 }
