@@ -1,6 +1,11 @@
 function drawBoard(array, divId) {
     $(divId).empty();
     for (let i = 0; i < array.length; i += 1) {
+        const num_cell = $(`<div>`).addClass("num_top").addClass("num_cell");
+        num_cell.append($(`<p>`).text(`${i}`));
+        $(divId).append(num_cell);
+    }
+    for (let i = 0; i < array.length; i += 1) {
         for (let j = 0; j < array[i].length; j += 1) {
             let cell = $(`<div>`).attr("id", `${i}${j}`);
             if (array[i][j] === "U") {

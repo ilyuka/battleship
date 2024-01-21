@@ -65,7 +65,7 @@ function makeTurn() {
                 updateShips();
                 clearInput();
                 enableInputs();
-            }, 250);
+            }, 550);
         }
     }
 }
