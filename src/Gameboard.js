@@ -22,7 +22,13 @@ class Gameboard {
 
         if (this.boardSize - y >= shipLength) {
             for (let i = y; i < y + shipLength; i += 1) {
-                this.board[x][i] = { id: this.shipCounter, hit: false };
+                this.board[x][i] = {
+                    id: this.shipCounter,
+                    hit: false,
+                    x: x,
+                    y: y,
+                    length: ship.length,
+                };
             }
         } else {
             throw new Error("ship too long, can't fit");
