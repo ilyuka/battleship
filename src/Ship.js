@@ -6,7 +6,6 @@ class Ship {
             this.length = length;
         }
         this.hitTimes = 0;
-        this.sunk = false;
     }
 
     hit() {
