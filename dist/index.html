@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>BattleShip</title>
+        <link rel="icon" href="./favicon.png" type="image/png" />
+    </head>
+    <body>
+        <div id="content">
+            <h1 id="title">BATTLESHIP GAME</h1>
+
+            <div id="board_placement">
+                <div>
+                    <label for="playerName">Your Name:</label>
+                    <input
+                        id="playerName"
+                        type="text"
+                        placeholder="Segismundo"
+                    />
+                </div>
+                <div id="place-menu">
+                    <div class="letters_col">
+                        <div></div>
+                        <div>A</div>
+                        <div>B</div>
+                        <div>C</div>
+                        <div>D</div>
+                        <div>E</div>
+                        <div>F</div>
+                        <div>G</div>
+                        <div>H</div>
+                        <div>I</div>
+                        <div>J</div>
+                    </div>
+                    <div id="gbplace"></div>
+                </div>
+                <button type="button" id="startgame">Start</button>
+            </div>
+
+            <div id="board_game">
+                <p id="board__message"></p>
+
+                <div id="boards">
+                    <div>
+                        <div id="p1">
+                            <span id="p1__name">name1</span>:
+                            <span id="p1__wins">3</span>
+                        </div>
+                        <div class="board-cont">
+                            <div class="letters_col">
+                                <div></div>
+                                <div>A</div>
+                                <div>B</div>
+                                <div>C</div>
+                                <div>D</div>
+                                <div>E</div>
+                                <div>F</div>
+                                <div>G</div>
+                                <div>H</div>
+                                <div>I</div>
+                                <div>J</div>
+                            </div>
+                            <div id="gb1"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div id="p2">
+                            <span id="p2__name">name2</span>:
+                            <span id="p2__wins">2</span>
+                        </div>
+                        <div class="board-cont">
+                            <div class="letters_col">
+                                <div></div>
+                                <div>A</div>
+                                <div>B</div>
+                                <div>C</div>
+                                <div>D</div>
+                                <div>E</div>
+                                <div>F</div>
+                                <div>G</div>
+                                <div>H</div>
+                                <div>I</div>
+                                <div>J</div>
+                            </div>
+                            <div id="gb2"></div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button type="button" id="giveup">give up</button>
+                    <button type="button" id="restart">restart</button>
+                </div>
+            </div>
+        </div>
+        <script
+            src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
+            type="text/javascript"
+        ></script>
+        <script src="./main.js"></script>
+    </body>
+</html>
