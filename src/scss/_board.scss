@@ -54,8 +54,23 @@ $gap: 5px;
         border-radius: 15%;
     }
 
+    & > .nothit {
+        animation: blink 2s infinite;
+    }
     & > .nothit:hover {
         cursor: pointer;
+    }
+}
+
+@keyframes blink {
+    0% {
+        border: 1px solid clrs.$darkseablue;
+    }
+    50% {
+        border: 1px solid clrs.$orange;
+    }
+    100% {
+        border: 1px solid clrs.$darkseablue;
     }
 }
 
@@ -106,4 +121,21 @@ $gap: 5px;
             display: flex;
         }
     }
+}
+
+.U {
+    background-color: aliceblue;
+}
+.M {
+    background-color: lightcoral;
+}
+.hit {
+    background-color: mediumaquamarine;
+}
+.nothit {
+    opacity: 1;
+    background-color: lightslategray;
+}
+.nothit.selected {
+    opacity: 0.35;
 }

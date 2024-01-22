@@ -26,8 +26,8 @@ class Game {
 
         this.currPlayerName = this.player1.name;
 
-        ui.drawBoard(this.player1.board.board, "#gb1");
-        ui.drawBoard(this.player2.board.board, "#gb2");
+        ui.drawBoard(this.player1.board.board, "#gb1", false);
+        ui.drawBoard(this.player2.board.board, "#gb2", true);
         GameUI.showGameSection();
         GameUI.updateMessage("");
         GameUI.hideRestartButton();
@@ -50,8 +50,8 @@ class Game {
         this.player2.board = this.gb2;
         this.player2.enemyBoard = this.gb1;
 
-        ui.drawBoard(this.gb1.board, "#gb1");
-        ui.drawBoard(this.gb2.board, "#gb2");
+        ui.drawBoard(this.gb1.board, "#gb1", false);
+        ui.drawBoard(this.gb2.board, "#gb2", true);
         GameUI.updateMessage("");
         GameUI.hideRestartButton();
         GameUI.addBoard2Listener(this.handleBoardClick.bind(this));

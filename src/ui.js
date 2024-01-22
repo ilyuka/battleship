@@ -1,4 +1,4 @@
-function drawBoard(array, divId) {
+function drawBoard(array, divId, hidden) {
     $(divId).empty();
     for (let i = 0; i < array.length; i += 1) {
         const num_cell = $(`<div>`).addClass("num_top").addClass("num_cell");
@@ -8,13 +8,13 @@ function drawBoard(array, divId) {
     for (let i = 0; i < array.length; i += 1) {
         for (let j = 0; j < array[i].length; j += 1) {
             let cell = $(`<div>`).attr("id", `${i}_${j}`);
-            if (array[i][j] === "U") {
+            if (array[i][j] === "U" || hidden) {
                 cell.addClass("U");
             } else if (array[i][j] === "M") {
                 cell.addClass("M");
             } else if (array[i][j]?.cellHit === true) {
                 cell.addClass("hit");
-            } else if (array[i][j]?.cellHit === false) {
+            } else if (array[i][j]?.cellHit === false && !hidden) {
                 cell.addClass("nothit");
             } else {
                 cell.addClass("test");

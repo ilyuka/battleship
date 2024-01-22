@@ -1,16 +1,15 @@
 import Gameboard from "./Gameboard.js";
 import * as ui from "./ui.js";
 import * as PlaceMenuUI from "./PlaceMenuUI.js";
-import Game from "./Game.js";
 
 export default class PlaceMenu {
     constructor(flowInstance) {
         this.isMoving = false;
         this.returnUpdatedShipData = this.returnUpdatedShipData.bind(this);
         this.defaultCoords = {
-            // "1_2": 3,
+            "1_2": 3,
             "3_5": 2,
-            // "7_8": 2,
+            "7_8": 2,
         };
         this.flowInstance = flowInstance;
         this.gb = new Gameboard(this.defaultCoords);
@@ -31,7 +30,7 @@ export default class PlaceMenu {
     }
 
     mount() {
-        ui.drawBoard(this.gb.board, "#gbplace");
+        ui.drawBoard(this.gb.board, "#gbplace", false);
         this.addDraggabilityForShips();
         PlaceMenuUI.showPlacementSection();
         PlaceMenuUI.addListenerForStartButton(this.startNewGame.bind(this));
@@ -62,7 +61,9 @@ export default class PlaceMenu {
             const ship = this.gb.ships[shipId];
             const initialCellsIds = [];
             for (let i = ship.col; i < ship.col + ship.length; i += 1) {
-                initialCellsIds.push(`${row}_${i}`);
+                const cell_id = `${row}_${i}`;
+                initialCellsIds.push(cell_id);
+                $(`#${cell_id}`).addClass("selected");
             }
             // const direction = ...
             if (!this.isMoving) {
@@ -76,6 +77,12 @@ export default class PlaceMenu {
         $("#gbplace")
             .children()
             .map((index, child) => {
+                $(child).on("mouseenter", (ev) => {
+                    console.log("entered", ev.target.id);
+                });
+                $(child).on("mouseout", (ev) => {
+                    console.log("left", ev.target.id);
+                });
                 $(child).on("click", (ev) => {
                     const newId = ev.target.id.split("_");
                     const newRow = Number(newId[0]);
@@ -91,7 +98,7 @@ export default class PlaceMenu {
                         this.fillNewCells(newRow, newCol, ship.length, shipId);
                     }
 
-                    ui.drawBoard(this.gb.board, "#gbplace");
+                    ui.drawBoard(this.gb.board, "#gbplace", false);
 
                     this.removeMouseEnter();
                     this.isMoving = false;
@@ -103,6 +110,7 @@ export default class PlaceMenu {
             .children()
             .map((index, child) => {
                 $(child).off("mouseenter");
+                $(child).off("over");
                 $(child).off("click");
             });
         this.addDraggabilityForShips();
