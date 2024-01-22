@@ -27,7 +27,7 @@ class Player {
         }
         if (this.enemyBoard.doesBoardHaveShipsLeft() === false) {
             this.wins += 1;
-            return "won";
+            return ["won", randomRow, randomCol];
         } else {
             return [res, randomRow, randomCol];
         }

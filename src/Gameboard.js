@@ -92,8 +92,6 @@ class Gameboard {
         if (typeof this.board[row][col] === "string") {
             if (this.board[row][col] === "M") {
                 // M - missed
-                console.log(this.board);
-                console.log(this.board[row][col]);
                 return "same twice";
             }
             if (this.board[row][col] === "U") {

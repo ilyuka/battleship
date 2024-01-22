@@ -38,20 +38,6 @@ function redrawCell(boardId, cellId, cellStatus) {
     }
 }
 
-function showMessage(text) {
-    $("#input__message").text(`${text}`);
-}
-function showRestartButton(restartFunction) {
-    $("#restart").show();
-    $("#restart").on("click", () => {
-        hideRestartButton();
-        restartFunction();
-    });
-}
-function hideRestartButton() {
-    $("#restart").hide();
-}
-
 function readClick(eTarget) {
     let eltId = eTarget.id.split("_");
     const x = Number(eltId[0]);
@@ -63,22 +49,4 @@ function readClick(eTarget) {
     }
 }
 
-function removeBoardClick(boardId) {
-    console.log("removed clikcy");
-    $(boardId).off("click");
-}
-function addBoardClick(boardId, fn) {
-    console.log("added clicky");
-    $(boardId).on("click", fn);
-}
-
-export {
-    drawBoard,
-    readClick,
-    showMessage,
-    showRestartButton,
-    hideRestartButton,
-    removeBoardClick,
-    addBoardClick,
-    redrawCell,
-};
+export { drawBoard, readClick, redrawCell };

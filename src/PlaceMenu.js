@@ -1,17 +1,19 @@
 import Gameboard from "./Gameboard.js";
 import * as ui from "./ui.js";
+import * as PlaceMenuUI from "./PlaceMenuUI.js";
+import Game from "./Game.js";
 
 export default class PlaceMenu {
-    constructor() {
+    constructor(flowInstance) {
         this.isMoving = false;
         this.returnUpdatedShipData = this.returnUpdatedShipData.bind(this);
-
         this.defaultCoords = {
-            "1_2": 3,
+            // "1_2": 3,
             "3_5": 2,
-            "7_8": 2,
+            // "7_8": 2,
         };
-        this.startPlaceMenu();
+        this.flowInstance = flowInstance;
+        this.gb = new Gameboard(this.defaultCoords);
     }
 
     returnUpdatedShipData() {
@@ -28,11 +30,21 @@ export default class PlaceMenu {
         return shipsCoords;
     }
 
-    startPlaceMenu() {
-        this.gb = new Gameboard(this.defaultCoords);
-
+    mount() {
         ui.drawBoard(this.gb.board, "#gbplace");
         this.addDraggabilityForShips();
+        PlaceMenuUI.showPlacementSection();
+        PlaceMenuUI.addListenerForStartButton(this.startNewGame.bind(this));
+    }
+    unmount() {
+        this.removeAllListeners();
+        PlaceMenuUI.hidePlacementSection();
+    }
+    startNewGame() {
+        const playerName = PlaceMenuUI.readNameInput() || "Segismundo";
+        const updatedCoords = this.returnUpdatedShipData();
+        this.flowInstance.game.mount(updatedCoords, playerName);
+        this.unmount();
     }
 
     addDraggabilityForShips() {
@@ -41,6 +53,7 @@ export default class PlaceMenu {
             .filter(function () {
                 return $(this).hasClass("nothit");
             });
+
         ships.on("click", (e) => {
             const initId = e.target.id.split("_");
             const row = Number(initId[0]);
@@ -85,6 +98,25 @@ export default class PlaceMenu {
                 });
             });
     }
+    removeMouseEnter() {
+        $("#gbplace")
+            .children()
+            .map((index, child) => {
+                $(child).off("mouseenter");
+                $(child).off("click");
+            });
+        this.addDraggabilityForShips();
+    }
+    removeAllListeners() {
+        PlaceMenuUI.removeAllListenersFromStartButton();
+        $("#gbplace").off();
+        $("#gbplace")
+            .children()
+            .map((index, child) => {
+                $(child).off();
+            });
+    }
+
     canPlace(row, col, length, shipId) {
         if (col + length > this.gb.boardSize) {
             return false;
@@ -130,14 +162,5 @@ export default class PlaceMenu {
         }
         this.gb.ships[shipId].row = row;
         this.gb.ships[shipId].col = col;
-    }
-    removeMouseEnter() {
-        $("#gbplace")
-            .children()
-            .map((index, child) => {
-                $(child).off("mouseenter");
-                $(child).off("click");
-            });
-        this.addDraggabilityForShips();
     }
 }
