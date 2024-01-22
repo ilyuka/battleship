@@ -1,0 +1,22 @@
+@use "./colors" as clrs;
+
+button {
+    min-width: 100px;
+    border-radius: 10px;
+    background-color: clrs.$darkseablue;
+    color: clrs.$orange;
+    font-weight: 700;
+    padding: 0.25rem 1rem 0.25rem 1rem;
+    border: none;
+    outline: 1px solid clrs.$orange;
+
+    &:hover,
+    &:focus-within {
+        cursor: pointer;
+        border: none;
+        opacity: 0.9;
+    }
+    &:active {
+        transform: scale(0.95);
+    }
+}

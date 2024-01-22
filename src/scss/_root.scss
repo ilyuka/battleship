@@ -1,0 +1,35 @@
+@use "./colors" as clrs;
+
+body {
+    min-height: 100vh;
+    background-color: clrs.$skyblue;
+    display: flex;
+    justify-content: center;
+}
+
+#content {
+    padding: 1rem;
+}
+
+#title {
+    text-align: center;
+    letter-spacing: 1.2px;
+    margin-bottom: 3rem;
+}
+
+#board_placement {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+
+    #playerName {
+        border-radius: 5px;
+        border: 1px solid clrs.$darkseablue;
+
+        &:focus-within {
+            border: 1px solid clrs.$darkseablue;
+            outline: 1px solid clrs.$darkseablue;
+        }
+    }
+}

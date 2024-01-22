@@ -1,5 +1,5 @@
 const ID = "#board_game";
-const INPUT_MSG_ID = "#input__message";
+const INPUT_MSG_ID = "#board__message";
 const ID_GB1 = "#gb1";
 const ID_GB2 = "#gb2";
 const RESTART_ID = "#restart";

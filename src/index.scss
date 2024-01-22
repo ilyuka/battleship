@@ -1,0 +1,19 @@
+@use "./scss/colors";
+@use "./scss/reset";
+@use "./scss/root";
+@use "./scss/button";
+@use "./scss/board";
+
+.U {
+    background-color: aliceblue;
+}
+
+.M {
+    background-color: lightcoral;
+}
+.hit {
+    background-color: mediumaquamarine;
+}
+.nothit {
+    background-color: lightslategray;
+}
