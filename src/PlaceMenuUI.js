@@ -21,10 +21,54 @@ function removeAllListenersFromStartButton() {
     $(START_BUTTON_ID).off();
 }
 
+function paintAvailability(newRow, newCol, shipLength, className) {
+    if (className === "available") {
+        for (let i = 0; i < shipLength; i += 1) {
+            const id = `#${newRow}_${newCol + i}`;
+            $(id).addClass("available");
+        }
+    } else if (className === "unavailable") {
+        for (let i = 0; i < shipLength && i < 10; i += 1) {
+            const id = `#${newRow}_${newCol + i}`;
+            $(id).addClass("unavailable");
+        }
+    }
+}
+function removeAvailability(newRow, newCol, shipLength, className) {
+    if (className === "available") {
+        for (let i = 0; i < shipLength; i += 1) {
+            const id = `#${newRow}_${newCol + i}`;
+            $(id).removeClass("available");
+        }
+    } else if (className === "unavailable") {
+        for (let i = 0; i < shipLength && i < 10; i += 1) {
+            const id = `#${newRow}_${newCol + i}`;
+            $(id).removeClass("unavailable");
+        }
+    }
+}
+
+function paintAsAvailable(newRow, newCol, shipLength) {
+    for (let i = 0; i < shipLength; i += 1) {
+        const id = `#${newRow}_${newCol + i}`;
+        $(id).addClass("available");
+    }
+}
+function removePaintAsAvailable(newRow, newCol, shipLength) {
+    for (let i = 0; i < shipLength; i += 1) {
+        const id = `#${newRow}_${newCol + i}`;
+        $(id).removeClass("available");
+    }
+}
+
 export {
     showPlacementSection,
     hidePlacementSection,
     readNameInput,
     addListenerForStartButton,
     removeAllListenersFromStartButton,
+    paintAsAvailable,
+    removePaintAsAvailable,
+    paintAvailability,
+    removeAvailability,
 };

@@ -49,7 +49,6 @@ function updateMessage(text) {
 }
 
 function updatePlayersInfo(p1name, p1wins, p2name, p2wins) {
-    console.log(p1name, p1wins, p2name, p2wins);
     $(`#p1__name`).text(p1name);
     $(`#p1__wins`).text(p1wins);
     $(`#p2__name`).text(p2name);

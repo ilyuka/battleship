@@ -54,19 +54,19 @@ export default class PlaceMenu {
             });
 
         ships.on("click", (e) => {
-            const initId = e.target.id.split("_");
-            const row = Number(initId[0]);
-            const col = Number(initId[1]);
-            const shipId = this.gb.board[row][col].id;
-            const ship = this.gb.ships[shipId];
-            const initialCellsIds = [];
-            for (let i = ship.col; i < ship.col + ship.length; i += 1) {
-                const cell_id = `${row}_${i}`;
-                initialCellsIds.push(cell_id);
-                $(`#${cell_id}`).addClass("selected");
-            }
-            // const direction = ...
             if (!this.isMoving) {
+                const initId = e.target.id.split("_");
+                const row = Number(initId[0]);
+                const col = Number(initId[1]);
+                const shipId = this.gb.board[row][col].id;
+                const ship = this.gb.ships[shipId];
+                const initialCellsIds = [];
+                for (let i = ship.col; i < ship.col + ship.length; i += 1) {
+                    const cell_id = `${row}_${i}`;
+                    initialCellsIds.push(cell_id);
+                    $(`#${cell_id}`).addClass("selected");
+                }
+                // const direction = ...
                 this.isMoving = true;
                 this.addMouseEnter(shipId, ship, initialCellsIds);
             }
@@ -78,12 +78,6 @@ export default class PlaceMenu {
             .children()
             .map((index, child) => {
                 $(child).on("mouseenter", (ev) => {
-                    console.log("entered", ev.target.id);
-                });
-                $(child).on("mouseout", (ev) => {
-                    console.log("left", ev.target.id);
-                });
-                $(child).on("click", (ev) => {
                     const newId = ev.target.id.split("_");
                     const newRow = Number(newId[0]);
                     const newCol = Number(newId[1]);
@@ -94,14 +88,58 @@ export default class PlaceMenu {
                         shipId
                     );
                     if (canPlace) {
-                        this.cleanPreviousCells(initialCellsIds);
-                        this.fillNewCells(newRow, newCol, ship.length, shipId);
+                        PlaceMenuUI.paintAvailability(
+                            newRow,
+                            newCol,
+                            ship.length,
+                            "available"
+                        );
+                        $(child).on("mouseout", (ev) => {
+                            PlaceMenuUI.removeAvailability(
+                                newRow,
+                                newCol,
+                                ship.length,
+                                "available"
+                            );
+                        });
+                        $(child).on("click", (ev) => {
+                            PlaceMenuUI.removePaintAsAvailable(
+                                newRow,
+                                newCol,
+                                ship.length
+                            );
+                            this.cleanPreviousCells(initialCellsIds);
+                            this.fillNewCells(
+                                newRow,
+                                newCol,
+                                ship.length,
+                                shipId
+                            );
+                            ui.drawBoard(this.gb.board, "#gbplace", false);
+                            this.removeMouseEnter();
+                            this.isMoving = false;
+                        });
+                    } else {
+                        PlaceMenuUI.paintAvailability(
+                            newRow,
+                            newCol,
+                            ship.length,
+                            "unavailable"
+                        );
+                        $(child).on("mouseout", (ev) => {
+                            PlaceMenuUI.removeAvailability(
+                                newRow,
+                                newCol,
+                                ship.length,
+                                "unavailable"
+                            );
+                        });
+                        $(child).on("click", (ev) => {
+                            ui.drawBoard(this.gb.board, "#gbplace", false);
+                            this.removeMouseEnter();
+                            this.isMoving = false;
+                        });
                     }
-
-                    ui.drawBoard(this.gb.board, "#gbplace", false);
-
-                    this.removeMouseEnter();
-                    this.isMoving = false;
                 });
             });
     }

@@ -139,3 +139,12 @@ $gap: 5px;
 .nothit.selected {
     opacity: 0.35;
 }
+#gbplace > .available {
+    border: 3px solid lime !important;
+    &:hover {
+        cursor: pointer;
+    }
+}
+#gbplace > .unavailable {
+    border: 3px solid red !important;
+}

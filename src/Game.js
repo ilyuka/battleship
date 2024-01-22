@@ -42,7 +42,6 @@ class Game {
         );
     }
     remount() {
-        console.log("game remounted");
         this.gb1 = new Gameboard(this.shipsCoords);
         this.gb2 = new Gameboard(this.computerCoords);
         this.player1.board = this.gb1;
@@ -57,7 +56,6 @@ class Game {
         GameUI.addBoard2Listener(this.handleBoardClick.bind(this));
     }
     unmount() {
-        console.log("game unmounted");
         GameUI.hideGameSection();
         GameUI.removeAllListeners();
         this.flowInstance.pm.mount();
