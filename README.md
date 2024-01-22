@@ -10,3 +10,4 @@ TODO:
 -   computer player can choose next target according to prev shot
 -   dark theme mode
 -   vertical ships
+-   css for mobile screens
