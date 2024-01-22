@@ -11,3 +11,4 @@ TODO:
 -   dark theme mode
 -   vertical ships
 -   css for mobile screens
+-   fix "Flash of Unstyled Content"
